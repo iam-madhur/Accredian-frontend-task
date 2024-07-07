@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+const API_URL = "https://accredian-backend-task-ryeb.onrender.com";
+
 const Modal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     yourName: "",
@@ -14,9 +16,7 @@ const Modal = ({ isOpen, onClose }) => {
 
   const fetchReferralCode = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/referrals/generate-code"
-      );
+      const response = await axios.post(`${API_URL}/referrals/generate-code`);
       setFormData((prevFormData) => ({
         ...prevFormData,
         referralCode: response.data.referralCode,
@@ -60,6 +60,13 @@ const Modal = ({ isOpen, onClose }) => {
     }
 
     try {
+      const response = await axios.post(`${API_URL}/referrals`, {
+        yourName: formData.yourName,
+        yourEmail: formData.yourEmail,
+        friendName: formData.friendName,
+        friendEmail: formData.friendEmail,
+      });
+      
       console.log("Form Data:", formData);
 
       setFormData({
